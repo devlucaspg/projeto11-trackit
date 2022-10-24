@@ -60,7 +60,7 @@ export default function TodayHabit({ tHabits, refresh, setRefresh }) {
                 <Span1>Seu recorde: </Span1><Span3 done={done} highest={tHabits.highestSequence} current={tHabits.currentSequence}>{tHabits.highestSequence} dias</Span3>
             </div>
             <Checkbox done={done}>
-                <ion-icon onClick={()=>VerifyHabit(tHabits)} name="checkbox"></ion-icon> 
+                <ion-icon data-identifier="done-habit-btn" onClick={()=>VerifyHabit(tHabits)} name="checkbox"></ion-icon> 
             </Checkbox>
         </Container>
     )

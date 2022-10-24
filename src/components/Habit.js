@@ -47,9 +47,9 @@ export default function Habit({ habit }) {
 
         // {habit === undefined ? <p>Carregando...</p> : (
         <Container>
-            <ContainerHabit>
+            <ContainerHabit data-identifier="habit-name">
                 <h3>{habit.name}</h3>
-                <img src={trash_icon} alt="Lixeira" onClick={()=> deleteHabit(habit.id)}/>
+                <img src={trash_icon} data-identifier="delete-habit-btn" alt="Lixeira" onClick={()=> deleteHabit(habit.id)}/>
             </ContainerHabit>    
             <ContainerDays>
                 {days.map((day) => (

@@ -66,17 +66,17 @@ export default function NewHabit() {
     return (
         <Container>
             <form onSubmit={sendNewHabit}>
-                <input type="text" placeholder="nome do hábito" onChange={(e) => setName(e.target.value)} disabled={loading} required/>
+                <input type="text" placeholder="nome do hábito" data-identifier="input-habit-name" onChange={(e) => setName(e.target.value)} disabled={loading} required/>
                 <ContainerDays>
                     {weekDays.map((day) => (
-                        <div onClick={()=>selectDay(day.id)} key={day.id} disabled={loading}><Day days={days} id={day.id}>{day.name}</Day></div>
+                        <div onClick={()=>selectDay(day.id)} key={day.id} disabled={loading}><Day data-identifier="week-day-btn" days={days} id={day.id}>{day.name}</Day></div>
                     ))}
                 </ContainerDays>
                 <ContainerButtons>
-                    <CancelButton onClick={()=>setAddHabit(!addHabit)} disabled={loading}>Cancelar</CancelButton>
+                    <CancelButton data-identifier="cancel-habit-create-btn" onClick={()=>setAddHabit(!addHabit)} disabled={loading}>Cancelar</CancelButton>
                     {loading ? (
                         <SaveButton disabled={loading}><ThreeDots type="ThreeDots" color="#FFFFFF" height={45} width={60} /></SaveButton>) : (
-                        <SaveButton disabled={loading} type="submit">Salvar</SaveButton>)}  
+                        <SaveButton disabled={loading} type="submit" data-identifier="save-habit-create-btn">Salvar</SaveButton>)}  
                 </ContainerButtons>
             </form>
         </Container>

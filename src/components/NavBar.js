@@ -11,7 +11,7 @@ export default function NavBar() {
     return (
         <Container>
             <Link to="/"><h6>TrackIt</h6></Link>
-            <img src={userInfo.image} alt="Foto de perfil"></img>
+            <img data-identifier="avatar" src={userInfo.image} alt="Foto de perfil"></img>
         </Container>
     )
 }

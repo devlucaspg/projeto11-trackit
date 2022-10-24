@@ -76,13 +76,13 @@ export default function HomePage() {
         <Container>
             <img src={logo} alt="logo" />
             <Form onSubmit={loginSubmit} >
-                <input type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} disabled={loading} required/>
-                <input type="password" placeholder="senha" onChange={(e) => setPassword(e.target.value)} disabled={loading} required/>
+                <input type="email" placeholder="email" data-identifier="input-email" onChange={(e) => setEmail(e.target.value)} disabled={loading} required/>
+                <input type="password" placeholder="senha" data-identifier="input-password" onChange={(e) => setPassword(e.target.value)} disabled={loading} required/>
                 {loading ? (
                 <Button disabled={loading}><ThreeDots type="ThreeDots" color="#FFFFFF" height={45} width={60} /></Button>) : (
-                <Button disabled={loading} type="submit">Entrar</Button>)}                
+                <Button disabled={loading} data-identifier="login-btn" type="submit">Entrar</Button>)}                
             </Form>
-            <Link to={`/cadastro`}>
+            <Link to={`/cadastro`} data-identifier="sign-up-action">
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
         </Container>

@@ -8,11 +8,11 @@ export default function Footer() {
     return (
         <Container>
             <div>
-                <Link to={`/habitos`}>Hábitos</Link>
+                <Link to={`/habitos`} data-identifier="habit-page-action">Hábitos</Link>
             </div>
             <Circle/>
             <div>
-                <Link to={`/historico`}>Histórico</Link>
+                <Link to={`/historico`} data-identifier="historic-page-action">Histórico</Link>
             </div>
         </Container>
     )

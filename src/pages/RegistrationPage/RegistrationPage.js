@@ -50,15 +50,15 @@ export default function RegistrationPage() {
         <Container>
             <img src={logo} alt="logo" />
             <Form onSubmit={registrationSubmit}>
-                <input type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} disabled={loading} required/>
-                <input type="password" placeholder="senha" onChange={(e) => setPassword(e.target.value)} disabled={loading} required/>
-                <input type="text" placeholder="nome" onChange={(e) => setName(e.target.value)} disabled={loading} required/>
-                <input type="picture" placeholder="foto" onChange={(e) => setImage(e.target.value)} disabled={loading} required/>
+                <input type="email" placeholder="email" data-identifier="input-email" onChange={(e) => setEmail(e.target.value)} disabled={loading} required/>
+                <input type="password" placeholder="senha" data-identifier="input-password" onChange={(e) => setPassword(e.target.value)} disabled={loading} required/>
+                <input type="text" placeholder="nome" data-identifier="input-name" onChange={(e) => setName(e.target.value)} disabled={loading} required/>
+                <input type="picture" placeholder="foto" data-identifier="input-photo" onChange={(e) => setImage(e.target.value)} disabled={loading} required/>
                 {loading ? (
                 <Button><ThreeDots type="ThreeDots" color="#FFFFFF" backgroundColor="#52B6FF" height={45} width={60} /></Button>) : (
                 <Button disabled={loading} type="submit">Cadastrar</Button>)}
             </Form>
-            <Link to={`/`}>
+            <Link to={`/`} data-identifier="back-to-login-action">
                 <p>Já tem uma conta? Faça login!</p>
             </Link>
         </Container>

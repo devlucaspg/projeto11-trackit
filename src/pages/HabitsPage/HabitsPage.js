@@ -38,7 +38,7 @@ export default function HabitsPage() {
             <NavBar />
             <Header>
                 <h1>Meus hábitos</h1>
-                <button onClick={()=>setAddHabit(!addHabit)}>+</button>
+                <button onClick={()=>setAddHabit(!addHabit)} data-identifier="create-habit-btn">+</button>
             </Header>
             <MyHabits>
                 {addHabit === true ? <NewHabit /> : null}

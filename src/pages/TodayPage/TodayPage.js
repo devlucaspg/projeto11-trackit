@@ -48,11 +48,11 @@ export default function TodayPage() {
         <Container>
             <NavBar />
             <Header>
-                <h1>{formatedDate}</h1>
-                <Paragraph habitProgress={progress}>{progress === 0 || isNaN(progress) ? "Nenhum hábito concluído ainda" : `${progress}% dos hábitos concluídos` }</Paragraph>
+                <h1 data-identifier="today-infos">{formatedDate}</h1>
+                <Paragraph data-identifier="today-infos" habitProgress={progress}>{progress === 0 || isNaN(progress) ? "Nenhum hábito concluído ainda" : `${progress}% dos hábitos concluídos` }</Paragraph>
             </Header>
             <ContainerHabits>
-                {todayHabits.map((tHabits) => <TodayHabit key={tHabits.id} refresh={refresh} setRefresh={setRefresh} tHabits={tHabits}/>)}
+                {todayHabits.map((tHabits) => <TodayHabit data-identifier="today-infos" key={tHabits.id} refresh={refresh} setRefresh={setRefresh} tHabits={tHabits}/>)}
             </ContainerHabits>
             <Footer /> 
         </Container>
