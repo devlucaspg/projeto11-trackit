@@ -1,27 +1,33 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import styled from "styled-components";
 import Context from "../contexts/Context";
 import axios from "axios"
 import { URL } from "../constants/urls";
 
-export default function TodayHabit({ tHabits }) {
+export default function TodayHabit({ tHabits, refresh, setRefresh }) {
 
-    const { todayHabits, setTodayHabits } = useContext(Context);
+    const { todayHabits } = useContext(Context);
     const { progress, setProgress } = useContext(Context);
     const { config } = useContext(Context);
 
-    const [done, setDone] = useState(tHabits.done);
+    const [done, setDone] = useState(tHabits.done)
+    const [count, setCount] = useState(0);
+    
+    function refreshHabits() {
+        let ref = () => setRefresh(!refresh)
+    }
     
     function VerifyHabit(tHabits) {
 
-        if (tHabits.done === false) {
+        if (done === false) {
 
             const promise = axios.post(`${URL}/habits/${tHabits.id}/check`, {}, config)
 
             promise.then((res) => {
-                setProgress(progress + 100 / tHabits.length);
+                setProgress(progress + 100 / todayHabits.length);
                 setDone(!done)
-                setTodayHabits(()=>[...todayHabits])
+                refreshHabits()
+                console.log(res)
             })
 
             promise.catch((err) => {
@@ -32,9 +38,11 @@ export default function TodayHabit({ tHabits }) {
 
             const promise = axios.post(`${URL}/habits/${tHabits.id}/uncheck`, {}, config)
 
-            promise.then(() => {
-                setProgress(progress - 100 / todayHabits.length);
-                setDone(false);
+            promise.then((res) => {
+                setProgress(count *(progress - 100 / todayHabits.length));
+                setDone(!done);
+                refreshHabits()
+                console.log(res)
             })
 
             promise.catch((err) => {
@@ -51,8 +59,8 @@ export default function TodayHabit({ tHabits }) {
                 <br></br>
                 <Span1>Seu recorde: </Span1><Span3 done={done} highest={tHabits.highestSequence} current={tHabits.currentSequence}>{tHabits.highestSequence} dias</Span3>
             </div>
-            <Checkbox>
-                <ion-icon onClick={()=>VerifyHabit(tHabits)} done={tHabits.done} name="checkbox"></ion-icon> 
+            <Checkbox done={done}>
+                <ion-icon onClick={()=>VerifyHabit(tHabits)} name="checkbox"></ion-icon> 
             </Checkbox>
         </Container>
     )
@@ -87,7 +95,7 @@ const Checkbox = styled.div`
     ion-icon {
         width: 90px;
         height: 90px;
-        color: ${(props) => (props.done === true ? "#8FC549" : "#EBEBEB" )};
+        color: ${(props) => props.done === true ? "#8FC549" : "#EBEBEB" };
         cursor: pointer;
     }
 `
@@ -101,7 +109,7 @@ const Span1 = styled.span`
 const Span2 = styled.span`
         font-size: 12.976px;
         line-height: 16px;
-        color: ${(props) => (props.done === true ? "#8FC549" : "#666666" )};
+        color: ${(props) => props.done === true ? "#8FC549" : "#666666" };
 `
 
 const Span3 = styled.span`

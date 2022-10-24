@@ -11,7 +11,7 @@ export default function HistoricPage() {
             <Header>
                 <h1>Histórico</h1>
             </Header>
-            <p>Em breve você poderá ver o hisstórico dos seus hábitos aqui!</p>
+            <p>Em breve você poderá ver o histórico dos seus hábitos aqui!</p>
             <Footer /> 
         </Container>
     )

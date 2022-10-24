@@ -15,6 +15,9 @@ export default function TodayPage() {
     const { config } = useContext(Context);
     const { progress, setProgress } = useContext(Context);
     const { todayHabits, setTodayHabits } = useContext(Context);
+    const { refresh, setRefresh } = useContext(Context);
+
+    const [count, setCount] = useState(true);
 
     const date = dayjs().locale("pt-br").format("dddd, DD/MM").replace("-feira" , "");
     const formatedDate = date.charAt(0).toUpperCase() + date.slice(1);
@@ -25,26 +28,31 @@ export default function TodayPage() {
 
         promise.then((res) => {
             setTodayHabits(res.data)
-            // console.log(res.data)
+            setCount(!count)
         })
 
         promise.catch((err) => {
             alert(err.response.data.message)
         })
-    }, [config, setTodayHabits, todayHabits])
+        
+    }, [config, todayHabits, refresh])
 
+    useEffect(() => {
 
-
+        const counter = todayHabits.reduce((counter, obj) => obj.done === true ? counter += 1 : counter, 0)
+        setProgress(counter * (100 / todayHabits.length))
+        
+    }, [count])
 
     return (
         <Container>
             <NavBar />
             <Header>
                 <h1>{formatedDate}</h1>
-                <Paragraph habitProgress={progress}>{progress === 0 ? "Nenhum hábito concluído ainda" : `${progress}% dos hábitos concluídos` }</Paragraph>
+                <Paragraph habitProgress={progress}>{progress === 0 || isNaN(progress) ? "Nenhum hábito concluído ainda" : `${progress}% dos hábitos concluídos` }</Paragraph>
             </Header>
             <ContainerHabits>
-                {todayHabits.map((tHabits) => <TodayHabit key={tHabits.id} tHabits={tHabits}/>)}
+                {todayHabits.map((tHabits) => <TodayHabit key={tHabits.id} refresh={refresh} setRefresh={setRefresh} tHabits={tHabits}/>)}
             </ContainerHabits>
             <Footer /> 
         </Container>
@@ -80,7 +88,7 @@ const Paragraph = styled.p`
     font-weight: 400;
     font-size: 17.976px;
     line-height: 22px;
-    color: ${(props) => (props.habitProgress === 0 ? "#bababa" : "#8FC549")};
+    color: ${(props) => props.habitProgress === 0 || isNaN(props.habitProgress) ? "#bababa" : "#8FC549" };
 `
 
 const ContainerHabits = styled.div`

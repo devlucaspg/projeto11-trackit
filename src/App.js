@@ -16,6 +16,7 @@ function App() {
   const [addHabit, setAddHabit] = useState(false);
   const [todayHabits, setTodayHabits] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [refresh, setRefresh] = useState(false);
 
   return (
     <Context.Provider value={{ userInfo , setUserInfo, config, setConfig, habits, setHabits, addHabit, setAddHabit, progress, setProgress, todayHabits, setTodayHabits }}>
