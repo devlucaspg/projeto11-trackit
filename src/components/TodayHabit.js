@@ -1,15 +1,51 @@
-import { useEffect, useContext } from "react"
+import { useState, useContext } from "react"
 import styled from "styled-components";
 import Context from "../contexts/Context";
 import axios from "axios"
 import { URL } from "../constants/urls";
 
-export default function TodayHabit({ todayHabits, done, setDone }) {
+export default function TodayHabit({  }) {
 
+    const { todayHabits, setTodayHabits } = useContext(Context);
     const { progress, setProgress } = useContext(Context);
     const { config } = useContext(Context);
-    
 
+    const [done, setDone] = useState(todayHabits.done);
+    
+    function VerifyHabit(todayHabits) {
+        // console.log(todayHabits.done)
+        console.log(todayHabits.id)
+        if (todayHabits.done === false) {
+
+            const promise = axios.post(`${URL}/habits/${todayHabits.id}/check`, {}, config)
+
+            promise.then((res) => {
+                setProgress(progress + 100 / todayHabits.length);
+                setDone(!done);
+                console.log(todayHabits.done)
+            })
+            console.log(todayHabits.done)
+            promise.catch((err) => {
+                alert(err.response.data.message)
+                console.log(todayHabits.done)
+            })
+            
+        }
+        else {
+
+            const promise = axios.post(`${URL}/habits/${todayHabits.id}/uncheck`, {}, config)
+
+            promise.then((res) => {
+                setProgress(progress - 100 / todayHabits.length);
+                setDone(false);
+                console.log(res.data)
+            })
+
+            promise.catch((err) => {
+                alert(err.response.data.message)
+            })
+        }
+    }
     // function doneHabit(id) {
     //     setDone(!done);
     //     setProgress(progress + 100 / todayHabits.length);
@@ -40,7 +76,7 @@ export default function TodayHabit({ todayHabits, done, setDone }) {
                 <Span1>Seu recorde: </Span1><Span3 done={done} highest={todayHabits.highestSequence} current={todayHabits.currentSequence}>{todayHabits.highestSequence} dias</Span3>
             </div>
             <Checkbox>
-                <ion-icon onClick={()=>doneHabit(todayHabits.id)} done={todayHabits.done} name="checkbox"></ion-icon> 
+                <ion-icon onClick={()=>VerifyHabit(todayHabits)} done={todayHabits.done} name="checkbox"></ion-icon> 
             </Checkbox>
         </Container>
     )

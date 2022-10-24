@@ -18,10 +18,11 @@ function App() {
   const [config, setConfig] = useState({});
   const [habits, setHabits] = useState([]);
   const [addHabit, setAddHabit] = useState(false);
+  const [todayHabits, setTodayHabits] = useState([]);
   const [progress, setProgress] = useState(0);
 
   return (
-    <Context.Provider value={{ userInfo , setUserInfo, config, setConfig, habits, setHabits, addHabit, setAddHabit, progress, setProgress }}>
+    <Context.Provider value={{ userInfo , setUserInfo, config, setConfig, habits, setHabits, addHabit, setAddHabit, progress, setProgress, todayHabits, setTodayHabits }}>
       <BrowserRouter>
         <GlobalStyle />
         <Routes>

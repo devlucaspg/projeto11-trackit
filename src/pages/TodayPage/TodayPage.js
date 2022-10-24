@@ -7,16 +7,15 @@ import { URL } from "../../constants/urls"
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import Context from "../../contexts/Context"
-import dayjs from "dayjs";
-import "dayjs/locale/pt"
+import dayjs from "dayjs/locale/pt";
+
 
 export default function TodayPage() {
 
     const { config } = useContext(Context);
     const { progress, setProgress } = useContext(Context);
+    const { todayHabits, setTodayHabits } = useContext(Context);
 
-    const [done, setDone] = useState(false);
-    const [todayHabits, setTodayHabits] = useState([]);
     const date = dayjs().locale("pt").format("dddd, DD/MM").replace("-feira" , "");
     const formatedDate = date.charAt(0).toUpperCase() + date.slice(1);
 
@@ -32,7 +31,7 @@ export default function TodayPage() {
         promise.catch((err) => {
             alert(err.response.data.message)
         })
-    }, [config, setTodayHabits, done])
+    }, [config, setTodayHabits])
 
 
 
@@ -45,7 +44,7 @@ export default function TodayPage() {
                 <Paragraph habitProgress={progress}>{progress === 0 ? "Nenhum hábito concluído ainda" : `${progress}% dos hábitos concluídos` }</Paragraph>
             </Header>
             <ContainerHabits>
-                {todayHabits.map((todayHabits) => <TodayHabit done={done} setDone={setDone} key={todayHabits.id} todayHabits={todayHabits}/>)}
+                {todayHabits.map((todayHabits) => <TodayHabit key={todayHabits.id} />)}
             </ContainerHabits>
             <Footer /> 
         </Container>
