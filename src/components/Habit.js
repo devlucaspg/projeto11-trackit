@@ -4,6 +4,7 @@ import trash_icon from "./../assets/images/trash-icon.svg"
 import axios from "axios";
 import Context from "../contexts/Context";
 import { URL } from "../constants/urls";
+import Swal from "sweetalert2";
 
 export default function Habit({ habit }) {
 
@@ -22,19 +23,22 @@ export default function Habit({ habit }) {
 
     function deleteHabit(id) {
         
-        const promise = axios.delete(`${URL}/habits/${id}`, config, {data: id})
+        Swal.fire({
+            title: "Quer mesmo excluir este hábito?",
+            text: "Esta ação não pode ser desfeita!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim! Apague meu hábito!",
+            }).then((result) => {
+                if (result.isConfirmed) {
 
-        promise.then(() => {
-            // alert("Hábito deletado com sucesso!")
-            setHabits(habits.filter((habit) => habit.id !== id))
+                    axios.delete(`${URL}/habits/${id}`, config, {data: id})
+
+                    setHabits(habits.filter((el) => el.id !== id))
+                }
         })
-
-        promise.catch((error) => {
-            alert("Não foi possível deletar o hábito")
-        })
-
-        // console.log(id)
-        // console.log(promise)
     }
 
     // console.log(habit.days)
