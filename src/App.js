@@ -8,10 +8,6 @@ import HomePage from './pages/HomePage/HomePage';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
 import TodayPage from './pages/TodayPage/TodayPage';
 
-
-
-
-
 function App() {
 
   const [userInfo, setUserInfo] = useState({});
