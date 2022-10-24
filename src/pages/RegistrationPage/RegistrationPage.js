@@ -6,6 +6,7 @@ import { SECONDARY_COLOR } from "../../constants/colors"
 import { useState } from "react"
 import { URL } from "../../constants/urls"
 import axios from "axios"
+import { ThreeDots } from "react-loader-spinner";
 
 export default function RegistrationPage() {
 
@@ -27,10 +28,19 @@ export default function RegistrationPage() {
 
         e.preventDefault()
 
+        setLoading(true)
+
         const promise = axios.post(`${URL}/auth/sign-up`, registrationForm)
 
-        promise.then(() => {navigate("/")})
-        promise.catch((err) => {alert(err.response.data.message)})
+        promise.then(() => {
+            setLoading(false)
+            navigate("/")
+        })
+        
+        promise.catch((err) => {
+            setLoading(false)
+            alert(err.response.data.message)
+        })
 
         console.log(registrationForm)
         console.log(promise)
@@ -40,11 +50,13 @@ export default function RegistrationPage() {
         <Container>
             <img src={logo} alt="logo" />
             <Form onSubmit={registrationSubmit}>
-                <input type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} required/>
-                <input type="password" placeholder="senha" onChange={(e) => setPassword(e.target.value)} required/>
-                <input type="text" placeholder="nome" onChange={(e) => setName(e.target.value)} required/>
-                <input type="picture" placeholder="foto" onChange={(e) => setImage(e.target.value)} required/>
-                <button type="submit">Cadastrar</button>
+                <input type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} disabled={loading} required/>
+                <input type="password" placeholder="senha" onChange={(e) => setPassword(e.target.value)} disabled={loading} required/>
+                <input type="text" placeholder="nome" onChange={(e) => setName(e.target.value)} disabled={loading} required/>
+                <input type="picture" placeholder="foto" onChange={(e) => setImage(e.target.value)} disabled={loading} required/>
+                {loading ? (
+                <Button><ThreeDots type="ThreeDots" color="#FFFFFF" backgroundColor="#52B6FF" height={45} width={60} /></Button>) : (
+                <Button disabled={loading} type="submit">Cadastrar</Button>)}
             </Form>
             <Link to={`/`}>
                 <p>Já tem uma conta? Faça login!</p>
@@ -75,4 +87,10 @@ const Container = styled.div`
         color: ${SECONDARY_COLOR};
         margin: 25px 0 0 0;
     }
+`
+
+const Button = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `

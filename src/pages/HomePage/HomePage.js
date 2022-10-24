@@ -3,7 +3,7 @@ import Form from "../../assets/styles/Form"
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { SECONDARY_COLOR } from "../../constants/colors"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import axios from "axios"
 import { URL } from "../../constants/urls"
 import Context from "../../contexts/Context"
@@ -16,7 +16,8 @@ export default function HomePage() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
-    const { setUserInfo, userInfo } = useContext(Context);
+    const { userInfo, setUserInfo } = useContext(Context);
+    const { setConfig } = useContext(Context);
 
     const loginForm = {
         email: email,   
@@ -33,6 +34,15 @@ export default function HomePage() {
 
         promise.then((res) => {
             setUserInfo(res.data)
+            setConfig({
+                headers: {
+                    Authorization: `Bearer ${res.data.token}`,
+                },
+            })     
+            
+            const localInfo = JSON.stringify(res.data)
+            localStorage.setItem("userInfo", localInfo)
+
             setLoading(false)
             navigate("/hoje") 
         })
@@ -46,17 +56,31 @@ export default function HomePage() {
        
     }
 
+    useEffect(()=> {
+        const savedInfo = JSON.parse(localStorage.getItem("userInfo"))
+        
+        if(savedInfo !== null) {
+            setUserInfo(savedInfo)
+            setConfig({
+                headers: {
+                    Authorization: `Bearer ${savedInfo.token}`,
+                },
+            })     
+            navigate("/hoje")
+            // console.log(savedInfo)
+            // console.log(userInfo)}
+        }
+    })
+
     return (
         <Container>
             <img src={logo} alt="logo" />
-            <Form onSubmit={loginSubmit} loading={loading} setLoading={setLoading}>
-                <input type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} disabled={loading} loading={loading} required/>
-                <input type="password" placeholder="senha" onChange={(e) => setPassword(e.target.value)} disabled={loading} loading={loading} required/>
+            <Form onSubmit={loginSubmit} >
+                <input type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} disabled={loading} required/>
+                <input type="password" placeholder="senha" onChange={(e) => setPassword(e.target.value)} disabled={loading} required/>
                 {loading ? (
-                <Button><ThreeDots type="ThreeDots" color="#FFFFFF" height={45} width={60} /></Button>) : (
-                <Button disabled={loading} type="submit">Entrar</Button>)}
-                
-                
+                <Button disabled={loading}><ThreeDots type="ThreeDots" color="#FFFFFF" height={45} width={60} /></Button>) : (
+                <Button disabled={loading} type="submit">Entrar</Button>)}                
             </Form>
             <Link to={`/cadastro`}>
                 <p>Não tem uma conta? Cadastre-se!</p>
@@ -93,4 +117,5 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    
 `

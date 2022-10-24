@@ -8,7 +8,7 @@ const Form = styled.form`
     width: 80%;
 
     input {
-        border: 1px solid #D5D5D5;
+        border: 1px solid #D4D4D4;
         border-radius: 5px;
         height: 45px;
         margin: 3px 0px;
@@ -29,7 +29,7 @@ const Form = styled.form`
         font-family: 'Lexend Deca', sans-serif;
         font-size: 20.976px;
         line-height: 26px;
-        background-color: ${SECONDARY_COLOR};
+        background-color: ${props => props.disabled ? "#52B6FF" : SECONDARY_COLOR};
         color: #ffffff;
         border-radius: 4.63636px;
         border: none;

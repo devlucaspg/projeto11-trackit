@@ -1,8 +1,15 @@
+import { useContext } from "react";
 import styled from "styled-components"
 import trash_icon from "./../assets/images/trash-icon.svg"
-import { SECONDARY_COLOR } from "./../constants/colors"
+import axios from "axios";
+import Context from "../contexts/Context";
+import { URL } from "../constants/urls";
 
-export default function Habit() {
+export default function Habit({ habit }) {
+
+    const { habits, setHabits } = useContext(Context);
+    const { config } = useContext(Context);
+
     const days = [
         { name: "D", id: 0 },
         { name: "S", id: 1 },
@@ -11,17 +18,38 @@ export default function Habit() {
         { name: "Q", id: 4 },
         { name: "S", id: 5 },
         { name: "S", id: 6 },
-      ];
+    ];
+
+    function deleteHabit(id) {
+        
+        const promise = axios.delete(`${URL}/habits/${id}`, config, {data: id})
+
+        promise.then(() => {
+            // alert("Hábito deletado com sucesso!")
+            setHabits(habits.filter((habit) => habit.id !== id))
+        })
+
+        promise.catch((error) => {
+            alert("Não foi possível deletar o hábito")
+        })
+
+        // console.log(id)
+        // console.log(promise)
+    }
+
+    // console.log(habit.days)
 
     return (
+
+        // {habit === undefined ? <p>Carregando...</p> : (
         <Container>
             <ContainerHabit>
-                <h3>Ler 1 capitulo de livro que eu sentir vontadeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee naquele dia especifico, podendo ser qualquer um mesmo</h3>
-                <img src={trash_icon} alt="Lixeira" />
+                <h3>{habit.name}</h3>
+                <img src={trash_icon} alt="Lixeira" onClick={()=> deleteHabit(habit.id)}/>
             </ContainerHabit>    
             <ContainerDays>
                 {days.map((day) => (
-                    <Day key={day.id}>{day.name}</Day>
+                    <Day key={day.id} habitDays={habit.days} id={day.id}>{day.name}</Day>
                 ))}
             </ContainerDays>
         </Container>
@@ -35,6 +63,7 @@ const Container = styled.div`
     height: 91;
     border-radius: 5px;
     padding: 18px;
+    margin: 5px 0;
 
     h3 {
         font-family: 'Lexend Deca';
@@ -55,6 +84,7 @@ const ContainerHabit = styled.div`
     img {
         width: 15px;
         margin: 0 0 0 10px;
+        cursor: pointer;
     }
     
 `
@@ -63,6 +93,7 @@ const ContainerDays = styled.div`
     display: flex;
 
 `
+
 const Day = styled.div`
     width: 30px;
     height: 30px;
@@ -74,7 +105,7 @@ const Day = styled.div`
     font-size: 19.976px;
     text-align: center;
     line-height: 25px;
-    color: #DBDBDB;
+    color: ${props => props.habitDays.includes(props.id) ? "#FFFFFF" : "#DBDBDB"};
+    background-color: ${props => props.habitDays.includes(props.id) ? "#CFCFCF" : "#FFFFFF" };
     margin: 8px 2px;
-    cursor: pointer;
 `

@@ -4,7 +4,7 @@ import { SECONDARY_COLOR, TITLE_COLOR } from "../../constants/colors"
 const Header = styled.div`
     display: flex;
     justify-content: space-between;
-    padding: 28px 0;
+    padding: 28px 0 0 0;
 
     h1 {
         font-family: 'Lexend Deca';

@@ -1,8 +1,27 @@
 import styled from "styled-components"
 import { SECONDARY_COLOR } from "./../constants/colors"
+import { ThreeDots } from "react-loader-spinner";
+import { useState, useContext } from "react"
+import Context from "../contexts/Context";
+import { URL } from "../constants/urls";
+import axios from "axios";
 
 export default function NewHabit() {
-    const days = [
+
+    const { addHabit, setAddHabit } = useContext(Context);
+    const { habits, setHabits } = useContext(Context);
+    const { config } = useContext(Context);
+
+    const [loading, setLoading] = useState(false)
+    const [name, setName] = useState("")
+    const [days, setDays] = useState([])
+
+    const newHabitForm = {
+        name: name,
+        days: days
+    }
+
+    const weekDays = [
         { name: "D", id: 0 },
         { name: "S", id: 1 },
         { name: "T", id: 2 },
@@ -10,20 +29,54 @@ export default function NewHabit() {
         { name: "Q", id: 4 },
         { name: "S", id: 5 },
         { name: "S", id: 6 },
-      ];
+    ];
+
+    function sendNewHabit(e) {
+
+        e.preventDefault();
+
+        setLoading(true);
+
+        const promise = axios.post(`${URL}/habits`, newHabitForm, config);
+
+        promise.then((res) => {
+            setLoading(false);
+            setAddHabit(!addHabit);
+            setHabits(()=>[...habits,  res.data])
+            // console.log(res.data)
+        });
+
+        promise.catch((err) => {
+          setLoading(false);
+          alert(err.response.data.message);
+        });
+    }
+
+    function selectDay(day) {
+        if (days.includes(day)) {
+            setDays(days.filter((el) => el !== day))
+        }
+        else {
+            setDays([...days, day])
+        }
+        // console.log(newHabitForm)
+        // console.log(config)
+    }
 
     return (
         <Container>
-            <form>
-                <input type="text" placeholder="nome do hábito" />
+            <form onSubmit={sendNewHabit}>
+                <input type="text" placeholder="nome do hábito" onChange={(e) => setName(e.target.value)} disabled={loading} required/>
                 <ContainerDays>
-                    {days.map((day) => (
-                        <Day key={day.id}>{day.name}</Day>
+                    {weekDays.map((day) => (
+                        <div onClick={()=>selectDay(day.id)} key={day.id} disabled={loading}><Day days={days} id={day.id}>{day.name}</Day></div>
                     ))}
                 </ContainerDays>
                 <ContainerButtons>
-                    <CancelButton>Cancelar</CancelButton>
-                    <SaveButton>Salvar</SaveButton>
+                    <CancelButton onClick={()=>setAddHabit(!addHabit)} disabled={loading}>Cancelar</CancelButton>
+                    {loading ? (
+                        <SaveButton disabled={loading}><ThreeDots type="ThreeDots" color="#FFFFFF" height={45} width={60} /></SaveButton>) : (
+                        <SaveButton disabled={loading} type="submit">Salvar</SaveButton>)}  
                 </ContainerButtons>
             </form>
         </Container>
@@ -57,8 +110,8 @@ const Container = styled.div`
 
 const ContainerDays = styled.div`
     display: flex;
-
 `
+
 const Day = styled.div`
     width: 30px;
     height: 30px;
@@ -70,7 +123,8 @@ const Day = styled.div`
     font-size: 19.976px;
     text-align: center;
     line-height: 25px;
-    color: #DBDBDB;
+    color: ${props => props.days.includes(props.id) ? "#FFFFFF" : "#DBDBDB"};
+    background-color: ${props => props.days.includes(props.id) ? "#CFCFCF" : "#FFFFFF" };
     margin: 8px 2px;
     cursor: pointer;
 `
@@ -82,7 +136,7 @@ const ContainerButtons = styled.div`
     margin-top: 22px;
 `
 
-const CancelButton = styled.button`
+const CancelButton = styled.div`
     font-family: 'Lexend Deca';
     font-size: 15.976px;
     line-height: 20px;
@@ -105,5 +159,8 @@ const SaveButton = styled.button`
     text-align: center;
     color: #FFFFFF;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 `

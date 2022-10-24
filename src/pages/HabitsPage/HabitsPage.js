@@ -5,17 +5,48 @@ import Habit from "../../components/Habit"
 import NavBar from "../../components/NavBar"
 import NewHabit from "../../components/NewHabit"
 import { BACKGROUND_COLOR } from "../../constants/colors"
+import { useEffect, useContext } from "react";
+import axios from "axios";
+import Context from "../../contexts/Context"
+import { URL } from "../../constants/urls"
 
 export default function HabitsPage() {
+
+    const { addHabit, setAddHabit } = useContext(Context);
+    const { habits, setHabits } = useContext(Context);
+    const { config } = useContext(Context);
+
+    useEffect(() => {
+        const promise = axios.get(`${URL}/habits`, config)
+        promise.then((res) => {
+            setHabits(res.data)
+            // console.log(res.data)
+
+        })
+        promise.catch((err) => {
+            alert(err.response.data.message)
+        })
+
+        
+    }, [config, setHabits])
+
+    // console.log(habits)
+    // console.log(addHabit)
+
     return (
         <Container>
             <NavBar />
             <Header>
                 <h1>Meus hábitos</h1>
-                <button>+</button>
+                <button onClick={()=>setAddHabit(!addHabit)}>+</button>
             </Header>
             <MyHabits>
-                <Habit />
+                {addHabit === true ? <NewHabit /> : null}
+                {(habits === []) ? (
+                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+                    ) : (
+                    habits.map((habit) => (<Habit habit={habit} key={habit.id}/>))                    
+                )}
             </MyHabits>
             <Footer /> 
         </Container>
@@ -35,10 +66,10 @@ const Container = styled.div`
         font-size: 17.976px;
         line-height: 22px;
         color: #666666;
-        margin: 29px 0;
+        margin: 17px 0;
     }
 `
 
 const MyHabits = styled.div`
-
+    padding: 22px 0 0 0 ;
 `

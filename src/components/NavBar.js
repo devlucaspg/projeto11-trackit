@@ -1,12 +1,17 @@
 import styled from "styled-components"
 import { BASE_COLOR } from "../constants/colors"
-import foto from "../assets/images/profile-picture.png"
+import Context from "../contexts/Context"
+import { useContext } from "react"
+import { Link } from "react-router-dom"
 
 export default function NavBar() {
+
+    const { userInfo } = useContext(Context);
+
     return (
         <Container>
-            <h6>TrackIt</h6>
-            <img src={foto} alt="Foto de perfil"></img>
+            <Link to="/"><h6>TrackIt</h6></Link>
+            <img src={userInfo.image} alt="Foto de perfil"></img>
         </Container>
     )
 }
@@ -33,8 +38,9 @@ const Container = styled.div`
     }
 
     img {
-        width: 51px;
+        max-width: 51px;
         height: 51px;
         border-radius: 50%;
+        object-fit: cover;
     }
 `

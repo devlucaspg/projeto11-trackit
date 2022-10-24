@@ -3,18 +3,14 @@ import styled from "styled-components"
 import { SECONDARY_COLOR } from "../constants/colors"
 import Circle from "./Circle";
 
-
-
 export default function Footer() {
-
-    const percentage = 78;
 
     return (
         <Container>
             <div>
                 <Link to={`/habitos`}>Hábitos</Link>
             </div>
-            <Circle percentage={percentage}/>
+            <Circle/>
             <div>
                 <Link to={`/historico`}>Histórico</Link>
             </div>
@@ -33,7 +29,7 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     display: flex;
-    padding: 0 30px 0 29px;
+    padding: 0 12% 0 12%;
 
     a {
         color: ${SECONDARY_COLOR};

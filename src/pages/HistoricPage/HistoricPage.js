@@ -11,7 +11,7 @@ export default function HistoricPage() {
             <Header>
                 <h1>Histórico</h1>
             </Header>
-            HistoricPage
+            <p>Em breve você poderá ver o hisstórico dos seus hábitos aqui!</p>
             <Footer /> 
         </Container>
     )
@@ -22,4 +22,14 @@ const Container = styled.div`
     height: 100vh;
     margin: 70px 0;
     padding: 0 18px;
+
+    p {
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17.976px;
+        line-height: 22px;
+        color: #666666;
+        margin: 17px 0;
+    }
 `

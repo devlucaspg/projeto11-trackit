@@ -15,9 +15,13 @@ import TodayPage from './pages/TodayPage/TodayPage';
 function App() {
 
   const [userInfo, setUserInfo] = useState({});
+  const [config, setConfig] = useState({});
+  const [habits, setHabits] = useState([]);
+  const [addHabit, setAddHabit] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   return (
-    <Context.Provider value={{ userInfo , setUserInfo }}>
+    <Context.Provider value={{ userInfo , setUserInfo, config, setConfig, habits, setHabits, addHabit, setAddHabit, progress, setProgress }}>
       <BrowserRouter>
         <GlobalStyle />
         <Routes>

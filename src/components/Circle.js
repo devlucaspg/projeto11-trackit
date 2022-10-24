@@ -3,16 +3,18 @@ import { SECONDARY_COLOR } from "../constants/colors"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from "react-router-dom";
+import { useContext } from "react"
+import Context from "../contexts/Context";
 
 export default function Circle() {
     
-    const percentage = 32;
+    const { progress } = useContext(Context);
 
     return (    
         <ContainerProgressBar>
             <Link to={`/hoje`}>
                 <CircularProgressbar
-                    value={percentage}
+                    value={progress}
                     text="Hoje"
                     background
                     backgroundPadding={6}
